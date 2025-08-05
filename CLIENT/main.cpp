@@ -2,7 +2,7 @@
 
 #include <winsock2.h>
 #include <ws2tcpip.h>
-#include <windows.h>   // Para Sleep()
+#include <windows.h>   // For Sleep()
 #include <iostream>
 #include <string>
 
@@ -11,7 +11,7 @@
 int main() {
     WSADATA wsaData;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
-        std::cerr << "WSAStartup falhou\n";
+        std::cerr << "WSAStartup failed\n";
         system("pause");
         return 1;
     }
@@ -19,10 +19,10 @@ int main() {
     std::string ip;
     int port;
 
-    std::cout << "Introduz o IP do servidor: ";
+    std::cout << "Enter the server IP: ";
     std::cin >> ip;
 
-    std::cout << "Introduz a porta: ";
+    std::cout << "Enter the port: ";
     std::cin >> port;
 
     SOCKET clientSocket = INVALID_SOCKET;
@@ -32,29 +32,29 @@ int main() {
     serverAddr.sin_addr.s_addr = inet_addr(ip.c_str());
 
     if (serverAddr.sin_addr.s_addr == INADDR_NONE) {
-        std::cerr << "Endereço IP inválido\n";
+        std::cerr << "Invalid IP address\n";
         WSACleanup();
         system("pause");
         return 1;
     }
 
-    std::cout << "Tentando conectar a " << ip << ":" << port << "...\n";
+    std::cout << "Trying to connect to " << ip << ":" << port << "...\n";
 
     while (true) {
         clientSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
         if (clientSocket == INVALID_SOCKET) {
-            std::cerr << "Erro ao criar socket: " << WSAGetLastError() << "\n";
+            std::cerr << "Error creating socket: " << WSAGetLastError() << "\n";
             WSACleanup();
             system("pause");
             return 1;
         }
 
         if (connect(clientSocket, (sockaddr*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR) {
-            std::cerr << "Falha na conexão: " << WSAGetLastError() << ". Tentando novamente em 3 segundos...\n";
+            std::cerr << "Connection failed: " << WSAGetLastError() << ". Retrying in 3 seconds...\n";
             closesocket(clientSocket);
             Sleep(3000);
         } else {
-            std::cout << "[Conectado ao servidor]\n";
+            std::cout << "[Connected to server]\n";
             break;
         }
     }
@@ -71,7 +71,7 @@ int main() {
         if (input == "0" || input == "1") {
             int sent = send(clientSocket, input.c_str(), (int)input.size(), 0);
             if (sent == SOCKET_ERROR) {
-                std::cerr << "Erro ao enviar dados: " << WSAGetLastError() << "\n";
+                std::cerr << "Error sending data: " << WSAGetLastError() << "\n";
                 break;
             }
 
@@ -79,23 +79,23 @@ int main() {
             int bytesReceived = recv(clientSocket, buffer, sizeof(buffer) - 1, 0);
             if (bytesReceived > 0) {
                 buffer[bytesReceived] = '\0';
-                std::cout << "[Servidor]: " << buffer << "\n";
+                std::cout << "[Server]: " << buffer << "\n";
             } else if (bytesReceived == 0) {
-                std::cout << "[Servidor desconectado]\n";
+                std::cout << "[Server disconnected]\n";
                 break;
             } else {
-                std::cerr << "Erro ao receber dados: " << WSAGetLastError() << "\n";
+                std::cerr << "Error receiving data: " << WSAGetLastError() << "\n";
                 break;
             }
         } else {
-            std::cout << "[Comando inválido - usa 0, 1 ou exit]\n";
+            std::cout << "[Invalid command - use 0, 1 or exit]\n";
         }
     }
 
     closesocket(clientSocket);
     WSACleanup();
 
-    std::cout << "Pressiona Enter para sair...";
+    std::cout << "Press Enter to exit...";
     std::cin.ignore();
     std::cin.get();
 
