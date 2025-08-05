@@ -14,8 +14,8 @@ This project simulates a water tank system with valves, LEDs, emergency states, 
   - Sound effects for emergency and valve actions
 
 - 💬 **C++ TCP Client**
-  - Command-line interface with reconnect and retry logic
-  - Sends tank fill/drain/emergency/reset commands
+  - Command-line interface with retry logic
+  - Sends tank fill/drain commands
   - Displays server acknowledgments
 
 - 🔊 **Sound & Visual Effects**
@@ -25,8 +25,7 @@ This project simulates a water tank system with valves, LEDs, emergency states, 
 - 🧪 **Step-by-Step Simulation**
   - Manual "Next Step" control
   - Emergency button and reset behavior
-  - Two-way communication via TCP/IP
-
+  - Communication via TCP/IP
 
 ---
 
@@ -42,7 +41,6 @@ This project simulates a water tank system with valves, LEDs, emergency states, 
 ### C++ Client (Windows)
 - Windows OS with:
   - MinGW (`g++`)
-  - or Microsoft Visual C++ (`cl.exe`)
 - Uses:
   - `winsock2.h`, `ws2tcpip.h`, `windows.h`
 
@@ -75,33 +73,25 @@ g++ main.cpp -o client.exe -lws2_32 -std=c++17 -static-libgcc -static-libstdc++
 ---
 
 ## 🌐 Communication Flow
-1. Launch the server (python scada_simulator.py or scada_simulator.exe)
+1. Launch the server (scada_simulator.exe)
 2. Choose the IP and port (e.g., 127.0.0.1:5000)
 3. Server waits for TCP connection
 4. Run the client (client.exe)
-5. Enter IP and port
+5. Enter IP and port (the same as server)
 6. Send commands via the terminal
 7. Visual SCADA GUI responds in real time (lights, sounds, status)
 
 ### 📡 Supported Commands (Client Side)
 - 0         → Fill the tank (low-level LED ON, input valve OPEN)  
-- 1         → Drain the tank (high-level LED ON, output valve OPEN)  
-- emergency → Trigger emergency shutdown (alarm + LED)  
-- reset     → Reset system and clear emergency  
-- exit      → Disconnect client  
+- 1         → Drain the tank (high-level LED ON, output valve OPEN)    
+- exit      → Disconnect client and set RESET on Server Side
 
-##🔄 Possible Extensions
-- 📊 Real-time sensor simulation or plotting
-- 📦 Modbus or MQTT communication
-- 💾 Data logging with SQLite or CSV
-- 🖼️ GUI-based C++ client
-- 📡 Multiple client handling
-
-## 📦 Packaging the Project
-To distribute the project:
-- ✅ Include the compiled server.exe and client.exe
-- ✅ Include the full resources/ folder (or embed with PyInstaller)
-- 📁 Optional: Package as .zip or create a .msi installer
+## 🔄 Possible Extensions
+- Real-time sensor simulation or plotting
+- Modbus or MQTT communication
+- Data logging with SQLite or CSV
+- GUI-based C++ client
+- Multiple client handling
 
 ## 🙏 Credits
 Developed as an educational project to demonstrate:
