@@ -61,7 +61,7 @@ pyinstaller --onefile --noconsole --add-data "resources;resources" scada_simulat
 
 ### 🧱 C++ Client → `client.exe`
 
-Use **PyInstaller** to create a standalone executable:
+Use **g++** to create a standalone executable:
 
 ```bash
 export PATH=$PATH:/c/MinGW/bin
